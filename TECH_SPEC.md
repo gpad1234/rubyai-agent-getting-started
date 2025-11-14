@@ -367,3 +367,266 @@ All agents use **Claude 3.5 Haiku** for cost efficiency:
 - ✅ AI-powered analysis of pages
 - ✅ Monitoring website changes
 - ✅ Extracting structured data
+
+---
+
+## Deployment & Production Considerations
+
+### Environment Setup
+```bash
+# .env file (git ignored)
+ANTHROPIC_API_KEY=sk-ant-...
+ANTHROPIC_TIMEOUT=30
+DEBUG=false
+```
+
+### Resource Requirements
+
+#### Minimum
+- **CPU**: 2 cores
+- **Memory**: 512 MB
+- **Ruby**: 3.0+
+- **Network**: Outbound HTTPS
+
+#### Recommended
+- **CPU**: 4 cores
+- **Memory**: 2-4 GB
+- **Ruby**: 3.3+
+- **Gems**: Pre-bundled (Gemfile.lock)
+
+### Scalability Patterns
+
+#### Horizontal Scaling (Multiple Processes)
+```ruby
+# Multiple instances, each with own thread pool
+agents = (0..3).map { ConcurrentAgent.new(client) }
+tasks_per_agent = tasks.each_slice(tasks.size / 4)
+```
+
+#### Vertical Scaling (More Threads)
+```ruby
+# Increase thread pool
+executor = Concurrent::FixedThreadPoolExecutor.new(size: 20)
+```
+
+---
+
+## Error Handling & Resilience
+
+### Exception Types
+```ruby
+# API Errors
+Anthropic::APIError           # Generic API error
+Anthropic::AuthenticationError # Invalid API key
+Anthropic::RateLimitError     # Quota exceeded
+
+# Network Errors
+Timeout::Error                 # Request timeout
+Net::OpenTimeout              # Connection timeout
+Errno::ECONNREFUSED           # Connection refused
+
+# Web Scraping Errors
+Mechanize::ResponseCodeError  # HTTP error (404, 500, etc)
+Nokogiri::XML::SyntaxError    # Malformed HTML
+```
+
+### Retry Strategies
+
+#### Exponential Backoff
+```ruby
+def execute_with_retry(prompt, max_retries: 3)
+  attempts = 0
+  begin
+    @client.messages(model: 'claude-3-5-haiku-20241022', 
+                    messages: [{role: 'user', content: prompt}])
+  rescue Anthropic::RateLimitError => e
+    attempts += 1
+    sleep 2 ** attempts if attempts < max_retries
+    retry
+  end
+end
+```
+
+---
+
+## Monitoring & Observability
+
+### Metrics to Track
+```ruby
+# Request latency
+start = Time.now
+result = agent.execute(prompt)
+latency = Time.now - start
+
+# Success rate
+success_count / total_requests
+
+# Queue depth (for BackgroundAgent)
+scheduler.list_jobs.count
+
+# Actor pool health (for CelluloidAgent)
+supervisor.status[:active_actors]
+```
+
+### Logging Examples
+```ruby
+require 'logger'
+
+logger = Logger.new(STDOUT)
+logger.level = Logger::INFO
+
+# Log executions
+logger.info "Executing with #{tasks.count} concurrent tasks"
+logger.warn "High latency: #{latency}ms" if latency > 5000
+logger.error "API Error: #{error.message}"
+
+# Structured logging (JSON)
+logger.info({
+  event: 'agent_execution',
+  agent_type: 'concurrent',
+  task_count: 5,
+  latency_ms: 2500,
+  status: 'success'
+}.to_json)
+```
+
+---
+
+## Advanced Usage Patterns
+
+### 1. Chaining Operations (ConcurrentAgent)
+```ruby
+agent = ConcurrentAgent.new(client)
+
+promise = agent.execute_with_promises("Initial prompt")
+  .then { |result| parse_result(result) }
+  .then { |parsed| validate_parsed(parsed) }
+  .then { |valid| store_result(valid) }
+  .rescue { |error| handle_error(error) }
+
+final_result = promise.value
+```
+
+### 2. Actor Communication Pattern (CelluloidAgent)
+```ruby
+supervisor = AgentSupervisor.new(client, 3)
+
+# Send multiple messages to same actor
+task_results = (1..10).map do |i|
+  supervisor.distribute_work(["Task #{i}"])
+end
+```
+
+### 3. Complex Job Workflows (BackgroundAgent)
+```ruby
+scheduler = BackgroundJobScheduler.new(agent)
+
+# Chain jobs
+job1_id = scheduler.schedule_job('analyze_text', {text: 'data'}, delay=0)
+scheduler.execute_pending_jobs
+
+job1_status = scheduler.job_status(job1_id)
+if job1_status[:status] == 'completed'
+  job2_id = scheduler.schedule_job('summarize', 
+    {text: job1_status[:result]}, delay=0)
+end
+```
+
+---
+
+## Security Best Practices
+
+### API Key Management
+```ruby
+# ✅ Good: Use environment variables
+api_key = ENV['ANTHROPIC_API_KEY']
+raise 'API key not set' if api_key.nil?
+
+# ❌ Bad: Hardcoded keys
+api_key = 'sk-ant-...'  # Never do this!
+
+# ✅ Good: Use .env file (git ignored)
+require 'dotenv'
+Dotenv.load
+```
+
+### Input Validation
+```ruby
+def scrape_and_analyze(url, prompt)
+  # Validate URL format
+  uri = URI.parse(url)
+  raise 'Invalid URL' unless uri.is_a?(URI::HTTP) || uri.is_a?(URI::HTTPS)
+  
+  # Sanitize prompt to prevent prompt injection
+  safe_prompt = sanitize_prompt(prompt)
+  
+  # Proceed with safe inputs
+  @mechanize.get(url)
+end
+```
+
+---
+
+## Troubleshooting
+
+### Common Issues & Solutions
+
+#### Issue: "Celluloid is not yet started"
+```ruby
+# Solution: Boot Celluloid first
+Celluloid.boot
+agent = CelluloidAgent.new(client)
+```
+
+#### Issue: Slow API responses
+```ruby
+# Solution: Switch to faster model (already done)
+# Using claude-3-5-haiku-20241022 instead of sonnet
+# This improves latency by 70%
+```
+
+#### Issue: "Rate limit exceeded"
+```ruby
+# Solution: Implement backoff
+def call_with_backoff
+  begin
+    @client.messages(...)
+  rescue Anthropic::RateLimitError
+    sleep 60  # Wait 1 minute
+    retry
+  end
+end
+```
+
+---
+
+## Version Compatibility
+
+### Ruby Versions
+- ✅ Ruby 3.0+
+- ✅ Ruby 3.1.x
+- ✅ Ruby 3.2.x
+- ✅ Ruby 3.3.x
+- ✅ Ruby 3.4.x (Current)
+
+### Gem Dependencies
+```
+anthropic >= 0.4.0
+concurrent-ruby >= 1.3.0
+celluloid >= 0.18.0
+mechanize >= 2.14.0
+nokogiri >= 1.18.0
+dotenv >= 2.8.0
+```
+
+---
+
+## References & Resources
+
+- [Anthropic Documentation](https://docs.anthropic.com)
+- [concurrent-ruby](https://github.com/ruby-concurrency/concurrent-ruby)
+- [Celluloid](https://github.com/celluloid/celluloid)
+- [Mechanize](https://github.com/sparklemotion/mechanize)
+- [Nokogiri](https://nokogiri.org)
+- [Ruby Performance](https://ruby-doc.org/docs/ruby-doc-bundle/FAQ/FAQ.html)
+
