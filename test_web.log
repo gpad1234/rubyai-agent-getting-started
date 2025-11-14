@@ -1,0 +1,90 @@
+[31mAnthropic Error (spotted in anthropic 0.4.1): [WARNING] Gem `anthropic` was renamed to `ruby-anthropic`.
+        Please update your Gemfile to use `ruby-anthropic` version 0.4.2 or later.
+[0m=== Web Automation Agent Example ===
+
+--- Scraping Example ---
+
+🌐 Scraping URL: https://example.com
+📄 Extracted 127 characters of content
+
+🤖 Analyzing content with Claude...
+💬 Analysis result:
+I apologize, but there's not enough context provided in the content snippet to fully describe the webpage's main purpose. This looks like a standard placeholder webpage (example.com), which is typically used as a generic, non-functional domain for testing, documentation, or demonstration purposes. Its main purpose is to serve as a simple, default example web page that developers and technical writers can reference without complications.
+
+
+--- Link Extraction Example ---
+
+🔗 Extracting links from: https://www.ruby-lang.org/
+
+🤖 Analyzing content with Claude...
+💬 Analysis result:
+I'll analyze the Ruby programming language's official website at https://www.ruby-lang.org/en/.
+
+Website Type: Official Programming Language Website
+
+Key Insights:
+1. Purpose
+- Official website for Ruby, a dynamic, open-source programming language
+- Provides comprehensive information and resources for Ruby developers
+- Maintained by the Ruby programming language community
+
+2. Main Features
+- Language overview and introduction
+- Documentation and guides
+- Download links for Ruby
+- Information about different Ruby versions
+- Community resources
+- Links to libraries and frameworks
+
+3. Target Audience
+- Software developers
+- Web developers
+- Programming enthusiasts
+- Students learning programming
+- Professional programmers interested in Ruby
+
+4. Content Sections (likely include)
+- Getting Started
+- Installation instructions
+- Language documentation
+- News and updates
+- Community forums
+- Development resources
+
+5. Website Characteristics
+- Clean, professional design
+- Informative and technical content
+- Focused on providing technical documentation
+- International language support (multiple translations)
+
+The website serves as the central hub for everything related to the Ruby programming language, offering a comprehensive resource for developers at all skill levels.
+
+Would you like me to elaborate on any specific aspect of the website?
+
+
+--- Element Search Example ---
+
+🔍 Searching elements with selector: h1
+📊 Found 1 matching elements
+
+🤖 Analyzing content with Claude...
+💬 Analysis result:
+Sure! Here are the details about the heading:
+
+"Content: Example Domain"
+
+This appears to be a simple two-part heading:
+1. "Content:" - Suggests this is a section or description about the following text
+2. "Example Domain" - A generic placeholder or sample domain name often used in documentation and demonstrations
+
+This looks like a standard template or placeholder text, commonly used in:
+- Web development documentation
+- Test scenarios
+- Default website examples
+- Technical writing
+
+Would you like me to elaborate on any part of this analysis?
+
+
+✅ Web automation examples completed
+💡 Tip: Web automation works best with public websites and stable internet connection

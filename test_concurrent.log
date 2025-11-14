@@ -1,0 +1,40 @@
+[31mAnthropic Error (spotted in anthropic 0.4.1): [WARNING] Gem `anthropic` was renamed to `ruby-anthropic`.
+        Please update your Gemfile to use `ruby-anthropic` version 0.4.2 or later.
+[0m=== Concurrent Agent Example ===
+
+🔄 Executing 3 tasks concurrently...
+
+📤 [Task 1] Sending: What is Ruby programming language?...
+
+📤 [Task 2] Sending: Explain concurrency in Ruby...
+
+📤 [Task 3] Sending: What are the benefits of parallel processing?...
+📥 [Task 1] Received response (1140 chars)
+📥 [Task 3] Received response (1475 chars)
+📥 [Task 2] Received response (1618 chars)
+
+✅ All tasks completed!
+
+📊 Received 3 results from parallel execution
+
+
+=== Promise Example ===
+
+📤 [Promise Task] Sending: Explain the promise pattern in one sentence...
+📥 [Promise Task] Received response (794 chars)
+
+
+=== Tracked Execution Example ===
+
+✨ Promise fulfilled with result length: 3 characters
+
+📤 [Task 1/3] Sending: What is an AI agent?...
+
+📤 [Task 2/3] Sending: How does Claude work?...
+
+📤 [Task 3/3] Sending: Explain async programming...
+📥 [Task 2/3] Received response (331 chars)
+📥 [Task 1/3] Received response (1266 chars)
+📥 [Task 3/3] Received response (1635 chars)
+
+✅ Completed 3 tracked tasks

@@ -1,0 +1,36 @@
+[31mAnthropic Error (spotted in anthropic 0.4.1): [WARNING] Gem `anthropic` was renamed to `ruby-anthropic`.
+        Please update your Gemfile to use `ruby-anthropic` version 0.4.2 or later.
+[0m=== Celluloid Agent Example ===
+
+--- Single Actor Example ---
+
+🎭 Actor processing message: What is the actor model in Ruby?...
+
+--- Supervisor Example ---
+👥 Supervisor initialized with 3 agents
+
+🎯 Supervisor distributing 5 tasks across agent pool...
+
+🎭 Actor processing message: Explain Celluloid in Ruby...
+
+🎭 Actor processing message: What are actors in concurrent programming?...
+
+🎭 Actor processing message: How does message passing work?...
+✅ Actor completed processing
+✅ Actor completed processing
+✅ Actor completed processing
+
+🎭 Actor processing message: What is the benefit of the actor model?...
+✅ Actor completed processing
+
+🎭 Actor processing message: Explain supervisors in actor systems...
+✅ Actor completed processing
+✅ Actor completed processing
+
+✅ Received 5 results from agent pool
+
+📊 Supervisor Status:
+  Pool size: 3
+  Agent 0: 2 messages processed
+  Agent 1: 2 messages processed
+  Agent 2: 1 messages processed

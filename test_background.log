@@ -1,0 +1,46 @@
+=== Background Agent Example ===
+[31mAnthropic Error (spotted in anthropic 0.4.1): [WARNING] Gem `anthropic` was renamed to `ruby-anthropic`.
+        Please update your Gemfile to use `ruby-anthropic` version 0.4.2 or later.
+[0m
+--- Text Analysis Example ---
+
+🔍 Analyzing text (164 characters)...
+✅ Task 'analyze_text' completed. Result length: 1157 characters
+
+--- Content Generation Example ---
+
+✍️  Generating content for: Write a short poem about Ruby programming...
+✅ Task 'generate_content' completed. Result length: 113 characters
+
+--- Summarization Example ---
+
+📝 Summarizing text...
+✅ Task 'summarize' completed. Result length: 415 characters
+
+--- Job Scheduling Example ---
+📅 Job job_1763124773_341 scheduled for 2025-11-14 04:52:53 -0800
+📅 Job job_1763124773_377 scheduled for 2025-11-14 04:52:55 -0800
+📅 Job job_1763124773_770 scheduled for 2025-11-14 04:52:54 -0800
+
+📋 Jobs scheduled: 3
+
+⏳ Waiting for scheduled time...
+
+🚀 Executing 3 pending jobs...
+
+🔍 Analyzing text (19 characters)...
+✅ Task 'analyze_text' completed. Result length: 315 characters
+✅ Job job_1763124773_341 completed
+
+📝 Summarizing text...
+✅ Task 'summarize' completed. Result length: 383 characters
+✅ Job job_1763124773_377 completed
+
+✍️  Generating content for: List 3 benefits of background jobs...
+✅ Task 'generate_content' completed. Result length: 1135 characters
+✅ Job job_1763124773_770 completed
+
+📊 Job Status:
+  job_1763124773_341: completed
+  job_1763124773_377: completed
+  job_1763124773_770: completed
