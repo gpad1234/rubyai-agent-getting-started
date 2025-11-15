@@ -116,8 +116,7 @@ post '/api/send_message' do
     response = case agent_type
                when 'concurrent'
                  agent = ConcurrentAgent.new($client)
-                 result = agent.execute_with_promises(user_message).value
-                 result
+                 agent.execute_with_promises(user_message)
                when 'background'
                  agent = BackgroundAgent.new($client)
                  agent.perform('generate_content', { 'prompt' => user_message, 'context' => '' })
@@ -125,7 +124,7 @@ post '/api/send_message' do
                  'Unknown agent type'
                end
 
-    $logger.log_message('ai_response', agent_type.titleize, response, { user_message: user_message })
+    $logger.log_message('ai_response', "#{agent_type} Agent", response, { user_message: user_message })
 
     { success: true, response: response }.to_json
   rescue => e

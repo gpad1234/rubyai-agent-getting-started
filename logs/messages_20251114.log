@@ -1,4 +1,4 @@
-{"timestamp":"2025-11-14T17:29:53-08:00","type":"user_message","sender":"User","message":"quit","metadata":{"agent":"background"}}
-{"timestamp":"2025-11-14T17:29:53-08:00","type":"error","sender":"System","message":"Broken pipe @ rb_sys_fail_on_write - <STDOUT>","metadata":{"error_class":"Errno::EPIPE"}}
-{"timestamp":"2025-11-14T17:30:02-08:00","type":"user_message","sender":"User","message":"exit","metadata":{"agent":"background"}}
-{"timestamp":"2025-11-14T17:30:02-08:00","type":"error","sender":"System","message":"Broken pipe @ rb_sys_fail_on_write - <STDOUT>","metadata":{"error_class":"Errno::EPIPE"}}
+{"timestamp":"2025-11-14T17:44:26-08:00","type":"user_message","sender":"User","message":"hello world","metadata":{"agent":"concurrent"}}
+{"timestamp":"2025-11-14T17:44:27-08:00","type":"ai_response","sender":"concurrent Agent","message":"Hi there! How are you doing today? Is there anything I can help you with?","metadata":{"user_message":"hello world"}}
+{"timestamp":"2025-11-14T17:44:30-08:00","type":"user_message","sender":"User","message":"Say hello","metadata":{"agent":"concurrent"}}
+{"timestamp":"2025-11-14T17:44:31-08:00","type":"ai_response","sender":"concurrent Agent","message":"Hello! How are you doing today?","metadata":{"user_message":"Say hello"}}

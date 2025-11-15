@@ -29,19 +29,13 @@ class ConcurrentAgent
 
   # Execute tasks with promises
   def execute_with_promises(prompt)
-    promise = Concurrent::Promise.execute do
-      ask_claude(prompt, "Promise Task")
-    end
+    result = Concurrent::Promise.execute do
+      data = ask_claude(prompt, "Promise Task")
+      data.is_a?(Hash) ? data[:response] : data
+    end.wait.value
 
-    promise.then do |result|
-      puts "\n✨ Promise fulfilled with result length: #{result.length} characters"
-      result
-    end.rescue do |error|
-      puts "\n❌ Promise rejected: #{error.message}"
-      nil
-    end
-
-    promise.wait.value
+    puts "\n✨ Promise fulfilled with result length: #{result.length} characters"
+    result
   end
 
   # Use atomic counter for task tracking
