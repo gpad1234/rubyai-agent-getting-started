@@ -10,6 +10,13 @@ require_relative 'lib/celluloid_agent'
 require_relative 'lib/background_agent'
 require_relative 'lib/web_automation_agent'
 
+# Boot Celluloid actor system
+begin
+  Celluloid.boot
+rescue => e
+  # Celluloid may already be booted or unavailable
+end
+
 # Initialize Claude client
 client = Anthropic::Client.new(access_token: ENV['ANTHROPIC_API_KEY'])
 
@@ -53,20 +60,25 @@ end
 def run_celluloid_demo(client)
   print_header("🎭 CELLULOID AGENT DEMO")
   
-  supervisor = AgentSupervisor.new(client, 2)
-  
-  tasks = [
-    "What is the actor model?",
-    "Explain message passing",
-    "Benefits of actors"
-  ]
-  
-  results = supervisor.distribute_work(tasks)
-  
-  puts "\n✅ Processed #{results.size} messages through actor pool"
-  
-  status = supervisor.status
-  puts "\n📊 Pool Status: #{status[:pool_size]} agents"
+  begin
+    supervisor = AgentSupervisor.new(client, 2)
+    
+    tasks = [
+      "What is the actor model?",
+      "Explain message passing",
+      "Benefits of actors"
+    ]
+    
+    results = supervisor.distribute_work(tasks)
+    
+    puts "\n✅ Processed #{results.size} messages through actor pool"
+    
+    status = supervisor.status
+    puts "\n📊 Pool Status: #{status[:pool_size]} agents"
+  rescue => e
+    puts "\n⚠️  Celluloid demo error: #{e.message}"
+    puts "Tip: Celluloid requires proper actor system initialization"
+  end
 end
 
 def run_background_demo(client)
