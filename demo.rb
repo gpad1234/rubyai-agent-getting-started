@@ -132,7 +132,7 @@ if __FILE__ == $PROGRAM_NAME
 
   loop do
     demo_menu
-    choice = gets.chomp
+    choice = gets&.chomp || ''
     
     case choice
     when '1'
