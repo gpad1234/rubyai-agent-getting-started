@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ruby AI Agents - Web GUI</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: #333;
+      min-height: 100vh;
+      padding: 20px;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    header {
+      background: white;
+      border-radius: 12px;
+      padding: 20px;
+      margin-bottom: 20px;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    }
+
+    header h1 {
+      color: #667eea;
+      margin-bottom: 5px;
+    }
+
+    header p {
+      color: #666;
+      font-size: 14px;
+    }
+
+    .content {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+    }
+
+    .card {
+      background: white;
+      border-radius: 12px;
+      padding: 20px;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    }
+
+    .card h2 {
+      color: #667eea;
+      margin-bottom: 15px;
+      font-size: 18px;
+    }
+
+    #messages {
+      height: 400px;
+      overflow-y: auto;
+      border: 1px solid #eee;
+      border-radius: 8px;
+      padding: 10px;
+      background: #f9f9f9;
+    }
+
+    .message {
+      padding: 10px;
+      margin-bottom: 10px;
+      border-radius: 8px;
+      border-left: 4px solid #667eea;
+    }
+
+    .message.user {
+      background: #e3f2fd;
+      border-left-color: #2196F3;
+    }
+
+    .message.ai {
+      background: #f3e5f5;
+      border-left-color: #667eea;
+    }
+
+    .message.error {
+      background: #ffebee;
+      border-left-color: #f44336;
+    }
+
+    .message-time {
+      font-size: 12px;
+      color: #999;
+      margin-bottom: 5px;
+    }
+
+    .message-sender {
+      font-weight: bold;
+      color: #667eea;
+      margin-bottom: 5px;
+    }
+
+    .input-group {
+      display: flex;
+      gap: 10px;
+      margin-top: 15px;
+    }
+
+    input[type="text"], select {
+      flex: 1;
+      padding: 10px;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      font-size: 14px;
+    }
+
+    select {
+      flex: 0 0 150px;
+    }
+
+    button {
+      padding: 10px 20px;
+      background: #667eea;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: bold;
+      transition: background 0.3s;
+    }
+
+    button:hover {
+      background: #764ba2;
+    }
+
+    button:disabled {
+      background: #ccc;
+      cursor: not-allowed;
+    }
+
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+      margin-bottom: 15px;
+    }
+
+    .stat-box {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      padding: 15px;
+      border-radius: 8px;
+      text-align: center;
+    }
+
+    .stat-box .number {
+      font-size: 24px;
+      font-weight: bold;
+    }
+
+    .stat-box .label {
+      font-size: 12px;
+      opacity: 0.9;
+    }
+
+    .table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 14px;
+    }
+
+    .table th {
+      background: #f5f5f5;
+      padding: 10px;
+      text-align: left;
+      font-weight: bold;
+      border-bottom: 2px solid #ddd;
+    }
+
+    .table td {
+      padding: 10px;
+      border-bottom: 1px solid #eee;
+    }
+
+    .badge {
+      display: inline-block;
+      padding: 3px 8px;
+      border-radius: 4px;
+      font-size: 12px;
+      font-weight: bold;
+    }
+
+    .badge-user {
+      background: #e3f2fd;
+      color: #1976d2;
+    }
+
+    .badge-ai {
+      background: #f3e5f5;
+      color: #6a1b9a;
+    }
+
+    .badge-error {
+      background: #ffebee;
+      color: #c62828;
+    }
+
+    @media (max-width: 768px) {
+      .content {
+        grid-template-columns: 1fr;
+      }
+
+      .stats {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>🚀 Ruby AI Agents - Web GUI</h1>
+      <p>Interactive interface for Claude AI agents with real-time message logging</p>
+    </header>
+
+    <div class="content">
+      <!-- Chat Card -->
+      <div class="card">
+        <h2>💬 Chat</h2>
+        
+        <div class="stats">
+          <div class="stat-box">
+            <div class="number" id="message-count">0</div>
+            <div class="label">Messages</div>
+          </div>
+          <div class="stat-box">
+            <div class="number" id="response-count">0</div>
+            <div class="label">Responses</div>
+          </div>
+          <div class="stat-box">
+            <div class="number" id="error-count">0</div>
+            <div class="label">Errors</div>
+          </div>
+        </div>
+
+        <div id="messages"></div>
+
+        <div class="input-group">
+          <select id="agent-type">
+            <option value="concurrent">Concurrent Agent</option>
+            <option value="background">Background Agent</option>
+          </select>
+          <input type="text" id="message-input" placeholder="Enter your message..." />
+          <button id="send-btn" onclick="sendMessage()">Send</button>
+          <button onclick="clearMessages()" style="background: #f44336;">Clear</button>
+        </div>
+      </div>
+
+      <!-- Logs Card -->
+      <div class="card">
+        <h2>📋 Logs</h2>
+        <table class="table">
+          <thead>
+            <tr>
+              <th>Type</th>
+              <th>Sender</th>
+              <th>Message</th>
+              <th>Time</th>
+            </tr>
+          </thead>
+          <tbody id="logs-body">
+            <tr><td colspan="4" style="text-align: center; color: #999;">Loading...</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const API_BASE = '/api';
+    
+    function sendMessage() {
+      const input = document.getElementById('message-input');
+      const agentType = document.getElementById('agent-type').value;
+      const message = input.value.trim();
+
+      if (!message) return;
+
+      const btn = document.getElementById('send-btn');
+      btn.disabled = true;
+      btn.textContent = '⏳ Sending...';
+
+      fetch(`${API_BASE}/send_message`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ message, agent_type: agentType })
+      })
+      .then(r => r.json())
+      .then(data => {
+        input.value = '';
+        btn.disabled = false;
+        btn.textContent = 'Send';
+        
+        if (data.success) {
+          loadMessages();
+        } else {
+          alert('Error: ' + data.error);
+        }
+      })
+      .catch(e => {
+        console.error(e);
+        btn.disabled = false;
+        btn.textContent = 'Send';
+        alert('Network error: ' + e.message);
+      });
+    }
+
+    function loadMessages() {
+      fetch(`${API_BASE}/messages?limit=50`)
+        .then(r => r.json())
+        .then(messages => {
+          const container = document.getElementById('messages');
+          container.innerHTML = '';
+          
+          let userCount = 0, aiCount = 0, errorCount = 0;
+
+          messages.forEach(msg => {
+            const div = document.createElement('div');
+            const msgClass = msg.type === 'user_message' ? 'user' : msg.type === 'error' ? 'error' : 'ai';
+            div.className = `message ${msgClass}`;
+            
+            const time = new Date(msg.timestamp).toLocaleTimeString();
+            const preview = msg.message.substring(0, 100) + (msg.message.length > 100 ? '...' : '');
+            
+            div.innerHTML = `
+              <div class="message-time">${time}</div>
+              <div class="message-sender">${msg.sender}</div>
+              <div>${preview}</div>
+            `;
+            container.appendChild(div);
+            
+            if (msg.type === 'user_message') userCount++;
+            else if (msg.type === 'ai_response') aiCount++;
+            else if (msg.type === 'error') errorCount++;
+          });
+          
+          document.getElementById('message-count').textContent = userCount;
+          document.getElementById('response-count').textContent = aiCount;
+          document.getElementById('error-count').textContent = errorCount;
+          
+          container.scrollTop = container.scrollHeight;
+        });
+
+      // Load logs
+      fetch(`${API_BASE}/messages?limit=200`)
+        .then(r => r.json())
+        .then(messages => {
+          const tbody = document.getElementById('logs-body');
+          tbody.innerHTML = '';
+
+          if (messages.length === 0) {
+            tbody.innerHTML = '<tr><td colspan="4" style="text-align: center; color: #999;">No logs yet</td></tr>';
+            return;
+          }
+
+          messages.forEach(msg => {
+            const tr = document.createElement('tr');
+            const time = new Date(msg.timestamp).toLocaleTimeString();
+            const preview = msg.message.substring(0, 60) + (msg.message.length > 60 ? '...' : '');
+            
+            tr.innerHTML = `
+              <td><span class="badge badge-${msg.type === 'user_message' ? 'user' : msg.type === 'error' ? 'error' : 'ai'}">${msg.type}</span></td>
+              <td>${msg.sender}</td>
+              <td>${preview}</td>
+              <td>${time}</td>
+            `;
+            tbody.appendChild(tr);
+          });
+        });
+    }
+
+    function clearMessages() {
+      if (confirm('Clear all messages?')) {
+        fetch(`${API_BASE}/clear_messages`, { method: 'GET' })
+          .then(r => r.json())
+          .then(() => loadMessages());
+      }
+    }
+
+    // Allow Enter key to send
+    document.getElementById('message-input')?.addEventListener('keypress', (e) => {
+      if (e.key === 'Enter') sendMessage();
+    });
+
+    // Load messages on page load
+    loadMessages();
+    setInterval(loadMessages, 3000);
+  </script>
+</body>
+</html>
