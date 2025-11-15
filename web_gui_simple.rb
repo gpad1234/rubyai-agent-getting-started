@@ -10,6 +10,8 @@ require 'time'
 
 require_relative 'lib/concurrent_agent'
 require_relative 'lib/background_agent'
+require_relative 'lib/celluloid_agent'
+require_relative 'lib/web_automation_agent'
 
 # Configure Sinatra
 set :port, 3000
@@ -120,6 +122,12 @@ post '/api/send_message' do
                when 'background'
                  agent = BackgroundAgent.new($client)
                  agent.perform('generate_content', { 'prompt' => user_message, 'context' => '' })
+               when 'celluloid'
+                 agent = CelluloidAgent.new($client)
+                 agent.process_message(user_message)
+               when 'web_automation'
+                 agent = WebAutomationAgent.new($client)
+                 agent.scrape_and_analyze("https://example.com", user_message)
                else
                  'Unknown agent type'
                end

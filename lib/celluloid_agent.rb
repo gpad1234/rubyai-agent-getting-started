@@ -7,14 +7,27 @@ require 'anthropic'
 class CelluloidAgent
   include Celluloid
 
-  def initialize(client)
-    @client = client
+  def initialize(client_or_pool_size = nil)
+    # Support both client object and pool size for backward compatibility
+    if client_or_pool_size.is_a?(Anthropic::Client)
+      @client = client_or_pool_size
+    elsif client_or_pool_size.is_a?(Integer)
+      # If given a number, it's treated as pool size - we need client from caller
+      warn "CelluloidAgent initialized with pool size #{client_or_pool_size}. Use CelluloidAgent.new(client) instead."
+      @client = nil
+    else
+      @client = client_or_pool_size
+    end
     @conversation_history = []
   end
 
   # Process a single message asynchronously
   def process_message(message, context = {})
     puts "\n🎭 Actor processing message: #{message[0..50]}..."
+    
+    unless @client
+      raise "Celluloid agent not initialized with a client. Use CelluloidAgent.new(client)"
+    end
     
     response = @client.messages(
       parameters: {

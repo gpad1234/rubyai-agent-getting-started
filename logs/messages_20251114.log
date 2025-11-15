@@ -2,3 +2,23 @@
 {"timestamp":"2025-11-14T17:44:27-08:00","type":"ai_response","sender":"concurrent Agent","message":"Hi there! How are you doing today? Is there anything I can help you with?","metadata":{"user_message":"hello world"}}
 {"timestamp":"2025-11-14T17:44:30-08:00","type":"user_message","sender":"User","message":"Say hello","metadata":{"agent":"concurrent"}}
 {"timestamp":"2025-11-14T17:44:31-08:00","type":"ai_response","sender":"concurrent Agent","message":"Hello! How are you doing today?","metadata":{"user_message":"Say hello"}}
+{"timestamp":"2025-11-14T17:44:54-08:00","type":"user_message","sender":"User","message":"hi","metadata":{"agent":"concurrent"}}
+{"timestamp":"2025-11-14T17:44:55-08:00","type":"ai_response","sender":"concurrent Agent","message":"Hello! How are you doing today? Is there anything I can help you with?","metadata":{"user_message":"hi"}}
+{"timestamp":"2025-11-14T17:45:29-08:00","type":"user_message","sender":"User","message":"exit","metadata":{"agent":"concurrent"}}
+{"timestamp":"2025-11-14T17:45:30-08:00","type":"ai_response","sender":"concurrent Agent","message":"I noticed that you typed \"exit\", which is often used to close a conversation or program. However, since we're having a chat, is there something specific I can help you with? I'm happy to assist you with any questions or tasks you may have.","metadata":{"user_message":"exit"}}
+{"timestamp":"2025-11-14T17:45:41-08:00","type":"user_message","sender":"User","message":"quit","metadata":{"agent":"concurrent"}}
+{"timestamp":"2025-11-14T17:45:42-08:00","type":"ai_response","sender":"concurrent Agent","message":"I understand that you want to end our conversation. Is there anything else I can help you with before we conclude?","metadata":{"user_message":"quit"}}
+{"timestamp":"2025-11-14T17:45:49-08:00","type":"user_message","sender":"User","message":"no","metadata":{"agent":"concurrent"}}
+{"timestamp":"2025-11-14T17:45:50-08:00","type":"ai_response","sender":"concurrent Agent","message":"I noticed you responded with \"no\", but I'm not sure what you're responding to. Is there something specific you'd like to discuss or get help with?","metadata":{"user_message":"no"}}
+{"timestamp":"2025-11-14T17:45:57-08:00","type":"user_message","sender":"User","message":"end","metadata":{"agent":"concurrent"}}
+{"timestamp":"2025-11-14T17:45:59-08:00","type":"ai_response","sender":"concurrent Agent","message":"It seems like you just typed \"end\". Is there something specific you would like to do or discuss? I'm here to help if you have any questions or tasks.","metadata":{"user_message":"end"}}
+{"timestamp":"2025-11-14T19:12:28-08:00","type":"user_message","sender":"User","message":"we are good","metadata":{"agent":"concurrent"}}
+{"timestamp":"2025-11-14T19:12:30-08:00","type":"ai_response","sender":"concurrent Agent","message":"I appreciate that, but we haven't actually established anything specific yet. Is there something I can help you with today?","metadata":{"user_message":"we are good"}}
+{"timestamp":"2025-11-14T19:16:10-08:00","type":"user_message","sender":"User","message":"hello","metadata":{"agent":"concurrent"}}
+{"timestamp":"2025-11-14T19:16:11-08:00","type":"ai_response","sender":"concurrent Agent","message":"Hi there! How are you doing today? Is there anything I can help you with?","metadata":{"user_message":"hello"}}
+{"timestamp":"2025-11-14T19:16:11-08:00","type":"user_message","sender":"User","message":"hello","metadata":{"agent":"background"}}
+{"timestamp":"2025-11-14T19:16:12-08:00","type":"ai_response","sender":"background Agent","message":"Hi there! How are you doing today? Is there anything I can help you with?","metadata":{"user_message":"hello"}}
+{"timestamp":"2025-11-14T19:16:12-08:00","type":"user_message","sender":"User","message":"hello","metadata":{"agent":"celluloid"}}
+{"timestamp":"2025-11-14T19:16:13-08:00","type":"ai_response","sender":"celluloid Agent","message":"Hi there! How are you doing today?","metadata":{"user_message":"hello"}}
+{"timestamp":"2025-11-14T19:16:13-08:00","type":"user_message","sender":"User","message":"hello","metadata":{"agent":"web_automation"}}
+{"timestamp":"2025-11-14T19:16:14-08:00","type":"ai_response","sender":"web_automation Agent","message":{"original_content_length":127,"analysis":"Hi there! How can I help you today? I'm an AI assistant ready to help with a variety of tasks like answering questions, providing information, or offering guidance.","timestamp":"2025-11-14 19:16:14 -0800"},"metadata":{"user_message":"hello"}}
