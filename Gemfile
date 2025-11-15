@@ -2,7 +2,7 @@
 
 source "https://rubygems.org"
 
-gem "anthropic", "~> 0.3"
+gem "ruby-anthropic", "~> 0.4"
 gem "dotenv", "~> 2.8"
 
 # Agent dependencies
