@@ -2,6 +2,7 @@
 
 require 'mechanize'
 require 'anthropic'
+require 'timeout'
 
 # Web automation agent using Mechanize for web scraping and interaction
 class WebAutomationAgent
@@ -17,15 +18,23 @@ class WebAutomationAgent
   def scrape_and_analyze(url, analysis_prompt = "Summarize the main content of this page")
     puts "\n🌐 Scraping URL: #{url}"
     
-    page = @mechanize.get(url)
-    
-    # Extract text content
-    content = page.search('p, h1, h2, h3').map(&:text).join("\n")
-    
-    puts "📄 Extracted #{content.length} characters of content"
-    
-    # Analyze with Claude
-    analyze_content(content, analysis_prompt)
+    begin
+      Timeout.timeout(10) do
+        page = @mechanize.get(url)
+        
+        # Extract text content
+        content = page.search('p, h1, h2, h3').map(&:text).join("\n")
+        
+        puts "📄 Extracted #{content.length} characters of content"
+        
+        # Analyze with Claude
+        analyze_content(content, analysis_prompt)
+      end
+    rescue Timeout::Error
+      "⏱️ Web scraping timed out. The website took too long to respond."
+    rescue => e
+      "⚠️ Unable to scrape website: #{e.message}"
+    end
   end
 
   # Extract links and analyze them

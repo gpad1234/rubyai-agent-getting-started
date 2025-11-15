@@ -7,6 +7,7 @@ require 'sinatra'
 require 'json'
 require 'fileutils'
 require 'time'
+require 'timeout'
 
 require_relative 'lib/concurrent_agent'
 require_relative 'lib/background_agent'
@@ -126,8 +127,16 @@ post '/api/send_message' do
                  agent = CelluloidAgent.new($client)
                  agent.process_message(user_message)
                when 'web_automation'
-                 agent = WebAutomationAgent.new($client)
-                 agent.scrape_and_analyze("https://example.com", user_message)
+                 begin
+                   agent = WebAutomationAgent.new($client)
+                   Timeout.timeout(15) do
+                     agent.scrape_and_analyze("https://example.com", user_message)
+                   end
+                 rescue Timeout::Error
+                   "Web scraping timed out. Please try with a different query or use another agent."
+                 rescue => e
+                   "Web automation error: #{e.message}"
+                 end
                else
                  'Unknown agent type'
                end
